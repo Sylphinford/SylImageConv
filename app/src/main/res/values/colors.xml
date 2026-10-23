@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#2F6FED</color>
+    <color name="ic_launcher_background">#2F6FED</color>
+    <color name="state_ok">#1E8E3E</color>
+    <color name="state_error">#C5221F</color>
+    <color name="state_running">#2F6FED</color>
+</resources>

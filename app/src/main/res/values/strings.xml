@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Syl ImageConv</string>
+
+    <string name="empty_hint">还没有选择图片\n\n点下方「添加图片」，或在其他应用里把图片分享到 Syl ImageConv</string>
+
+    <string name="label_format">输出格式</string>
+    <string name="label_mode">编码方式</string>
+    <string name="label_quality">质量</string>
+    <string name="label_output_dir">保存到</string>
+
+    <string name="format_jpg">JPG</string>
+    <string name="format_png">PNG</string>
+    <string name="format_webp">WEBP</string>
+
+    <string name="mode_lossy">有损</string>
+    <string name="mode_lossless">无损</string>
+
+    <string name="btn_add">添加图片</string>
+    <string name="btn_convert">开始转换</string>
+    <string name="btn_clear">清空</string>
+    <string name="btn_change_dir">更改</string>
+    <string name="btn_reset_dir">恢复默认</string>
+
+    <string name="count_selected">已选 %1$d 张</string>
+    <string name="quality_value">%1$d%%</string>
+
+    <string name="status_converting">正在转换 %1$d/%2$d：%3$s</string>
+    <string name="status_done_all">完成：%1$d 张已保存到 %2$s</string>
+    <string name="status_done_partial">完成：成功 %1$d 张，失败 %2$d 张，保存到 %3$s</string>
+    <string name="status_reading">正在读取图片信息…</string>
+
+    <string name="item_meta">%1$d×%2$d · %3$s</string>
+    <string name="item_meta_converted">%1$d×%2$d · %3$s → %4$s</string>
+    <string name="state_done">已转换</string>
+    <string name="state_failed">失败</string>
+    <string name="state_running">转换中</string>
+
+    <string name="toast_dup">这些图片已经在列表里了</string>
+    <string name="toast_some_failed">有 %1$d 张图片无法读取</string>
+    <string name="toast_cleared">已清空列表</string>
+    <string name="toast_no_image">请先添加图片</string>
+    <string name="toast_need_storage">需要存储权限才能写入 Pictures 目录</string>
+    <string name="toast_dir_changed">输出目录已更新</string>
+    <string name="toast_dir_reset">已恢复默认输出目录</string>
+
+    <string name="hint_png_no_quality">PNG 为无损格式，质量参数不生效</string>
+    <string name="hint_lossless_no_quality">无损 WEBP 不需要质量参数</string>
+
+    <string name="err_decode">无法解码这张图片（格式不支持或文件损坏）</string>
+    <string name="err_too_large">图片过大，内存不足</string>
+    <string name="err_encode">编码失败</string>
+    <string name="err_write">写入输出文件失败</string>
+
+    <string name="dir_default">Pictures/SylImageConv</string>
+
+    <string name="menu_licenses">开源许可</string>
+    <string name="title_licenses">开源许可</string>
+    <string name="err_licenses">无法读取许可文件</string>
+    <string name="licenses_summary">Syl ImageConv 以 Apache License 2.0 授权，并使用以下开源组件。</string>
+</resources>

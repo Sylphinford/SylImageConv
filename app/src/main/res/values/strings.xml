@@ -50,6 +50,7 @@
     <string name="err_decode">无法解码这张图片（格式不支持或文件损坏）</string>
     <string name="err_too_large">图片过大，内存不足</string>
     <string name="err_encode">编码失败</string>
+    <string name="err_webp_too_large">%1$d×%2$d 超出 WebP 上限 %3$d，请改用 JPG 或先缩小图片</string>
     <string name="err_write">写入输出文件失败</string>
 
     <string name="dir_default">Pictures/SylImageConv</string>

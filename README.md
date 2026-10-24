@@ -114,6 +114,7 @@ keytool -genkeypair -v -keystore release.jks -alias sylimageconv \
 ## 已知限制
 
 - PNG 是无损格式，质量百分比对它无效（界面会提示并隐藏滑块）
+- 输出 WEBP 时单边不能超过 16383 像素（格式规格限制，宽高各用 14 bit 存储）。超出时会在列表里提示改用 JPG，不会自动缩小
 - 输出不带原图 EXIF 元数据（只保留像素内容与方向校正结果）
 - 通过「分享」进来的文件，读权限只在本次任务内有效；转换请一次性做完，不要中途杀进程
 - 输入格式取决于系统解码器：JPG/PNG/WEBP/GIF/BMP/HEIC 一般都能读，但输出只支持 JPG/PNG/WEBP

@@ -35,7 +35,7 @@ class ConversionEngine(private val context: Context) {
     data class Outcome(val outputName: String, val downsampled: Boolean, val bytes: Long)
 
     fun convert(item: ImageItem, options: ConvertOptions, store: OutputStore): Outcome {
-        val decoded = decode(item.uri)
+        val decoded = decode(item.uri, options.format.maxDimension)
         var bitmap = applyOrientation(decoded.bitmap, item.uri)
         // JPEG 没有 alpha 通道，带透明区域时需要先铺白底，否则透明处会变黑
         if (options.format == OutputFormat.JPG && bitmap.hasAlpha()) {
@@ -71,7 +71,7 @@ class ConversionEngine(private val context: Context) {
 
     private class Decoded(val bitmap: Bitmap, val downsampled: Boolean)
 
-    private fun decode(uri: Uri): Decoded {
+    private fun decode(uri: Uri, maxDimension: Int): Decoded {
         val resolver = context.contentResolver
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         try {
@@ -81,6 +81,18 @@ class ConversionEngine(private val context: Context) {
         }
         if (bounds.outWidth <= 0 || bounds.outHeight <= 0) {
             throw IOException(context.getString(R.string.err_decode))
+        }
+
+        // 目标格式有规格上限时提前拦下：此时还没分配位图，代价很小。
+        // 否则会一路解码 + 编码，最后只拿到一个没头没脑的「编码失败」。
+        if (maxDimension > 0 &&
+            (bounds.outWidth > maxDimension || bounds.outHeight > maxDimension)
+        ) {
+            throw IOException(
+                context.getString(
+                    R.string.err_webp_too_large, bounds.outWidth, bounds.outHeight, maxDimension
+                )
+            )
         }
 
         // 超大图先按 1/2、1/4 … 降采样重试，避免 OOM

@@ -29,6 +29,20 @@ enum class OutputFormat(val ext: String, val mime: String, val labelRes: Int) {
     val supportsQuality: Boolean
         get() = this != PNG
 
+    /**
+     * 该格式允许的最大单边像素数，0 表示没有规格限制。
+     *
+     * WebP 的宽高各用 14 bit 存储，任一边超过 16383 时编码器会直接失败
+     * （`Bitmap.compress` 返回 false），因此需要在编码前拦下来。
+     * JPG 的上限是 65535，PNG 没有规格限制，实际都受内存约束，不需要检查。
+     */
+    val maxDimension: Int
+        get() = if (this == WEBP) WEBP_MAX_DIMENSION else 0
+
+    companion object {
+        const val WEBP_MAX_DIMENSION = 16383
+    }
+
     fun compressFormat(webpLossless: Boolean): Bitmap.CompressFormat = when (this) {
         JPG -> Bitmap.CompressFormat.JPEG
         PNG -> Bitmap.CompressFormat.PNG

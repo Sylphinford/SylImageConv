@@ -19,6 +19,7 @@
     <string name="btn_add">添加图片</string>
     <string name="btn_convert">开始转换</string>
     <string name="btn_clear">清空</string>
+    <string name="btn_clear_done">清除已转换 (%1$d)</string>
     <string name="btn_change_dir">更改</string>
     <string name="btn_reset_dir">恢复默认</string>
 
@@ -39,7 +40,9 @@
     <string name="toast_dup">这些图片已经在列表里了</string>
     <string name="toast_some_failed">有 %1$d 张图片无法读取</string>
     <string name="toast_cleared">已清空列表</string>
+    <string name="toast_cleared_done">已从列表移除 %1$d 张已转换的图片（输出文件保留）</string>
     <string name="toast_no_image">请先添加图片</string>
+    <string name="toast_no_picker">系统里没有可用的文件选择器</string>
     <string name="toast_need_storage">需要存储权限才能写入 Pictures 目录</string>
     <string name="toast_dir_changed">输出目录已更新</string>
     <string name="toast_dir_reset">已恢复默认输出目录</string>

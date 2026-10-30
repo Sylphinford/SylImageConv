@@ -17,6 +17,7 @@
 package io.github.sylphinford.imageconv
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -153,9 +154,10 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
         })
 
-        binding.btnAdd.setOnClickListener { pickImages.launch(arrayOf("image/*")) }
+        binding.btnAdd.setOnClickListener { launchSaf { pickImages.launch(arrayOf("image/*")) } }
         binding.btnConvert.setOnClickListener { startConversion() }
         binding.btnClear.setOnClickListener { clearItems() }
+        binding.btnClearDone.setOnClickListener { clearConverted() }
         binding.btnDir.setOnClickListener { showDirDialog() }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
@@ -211,10 +213,22 @@ class MainActivity : AppCompatActivity() {
         binding.dirText.text = store.label()
     }
 
+    /** 极少数精简系统里没有文件选择器，别让 launch 抛异常把应用带走 */
+    private fun launchSaf(action: () -> Unit) {
+        try {
+            action()
+        } catch (_: ActivityNotFoundException) {
+            toast(getString(R.string.toast_no_picker))
+        }
+    }
+
     private fun updateUi() {
+        val doneCount = items.count { it.state == ImageItem.State.DONE }
         binding.emptyState.isVisible = items.isEmpty()
         binding.countText.text = getString(R.string.count_selected, items.size)
         binding.btnClear.isVisible = items.isNotEmpty() && !busy
+        binding.btnClearDone.isVisible = doneCount > 0 && !busy
+        binding.btnClearDone.text = getString(R.string.btn_clear_done, doneCount)
         binding.btnConvert.isEnabled = items.isNotEmpty() && !busy
         binding.btnAdd.isEnabled = !busy
         binding.btnDir.isEnabled = !busy
@@ -226,7 +240,7 @@ class MainActivity : AppCompatActivity() {
             .setTitle(R.string.label_output_dir)
             .setItems(labels) { _, which ->
                 if (which == 0) {
-                    pickFolder.launch(null)
+                    launchSaf { pickFolder.launch(null) }
                 } else {
                     store.treeUri = null
                     prefs.treeUri = null
@@ -350,6 +364,21 @@ class MainActivity : AppCompatActivity() {
         binding.progressArea.isVisible = false
         updateUi()
         toast(getString(R.string.toast_cleared))
+    }
+
+    /**
+     * 只移除转换成功的条目，失败的（和未转换的）留在列表里，
+     * 方便换个格式重试时不必手动挑。已经写出的输出文件不受影响。
+     */
+    private fun clearConverted() {
+        if (busy) return
+        val done = items.count { it.state == ImageItem.State.DONE }
+        if (done == 0) return
+        items.removeAll { it.state == ImageItem.State.DONE }
+        adapter.notifyDataSetChanged()
+        if (items.isEmpty()) binding.progressArea.isVisible = false
+        updateUi()
+        toast(getString(R.string.toast_cleared_done, done))
     }
 
     // ------------------------------------------------------------ 转换
